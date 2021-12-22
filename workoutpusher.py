@@ -91,7 +91,7 @@ def push_workout(driver, td_link):
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'TrainingPeaks (Power)')]"))).click()
 
     #sleep to confirm send
-    sleep(5)
+    sleep(3)
 
     driver.quit()
 
