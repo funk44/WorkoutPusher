@@ -1,0 +1,22 @@
+{
+    "Tops" : {
+        "Firefox" : "https://github.com/mozilla/geckodriver/releases/download/v0.30.0/",
+        "Edge" : "https://msedgedriver.azureedge.net/",
+        "Chome" : "https://chromedriver.storage.googleapis.com/"
+    },
+    "Tails" : {   
+        "Firefox" : "geckodriver-v0.30.0-win64.zip",
+        "Edge" : "edgedriver_win64.zip",
+        "Chome" : "chromedriver_win32.zip"
+    },
+    "Executables" : {   
+        "Firefox" : "geckodriver.exe",
+        "Edge" : "msedgedriver.exe",
+        "Chrome" : "chromedriver.exe"
+    },
+    "Capabilities" : {
+        "Firefox": "browserVersion",
+        "Edge" : "version",
+        "Chrome": "version"
+    }
+}
