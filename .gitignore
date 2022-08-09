@@ -20,6 +20,10 @@ parts/
 sdist/
 var/
 wheels/
+old/
+reqs/
+drivers/
+.vscode/
 pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
@@ -133,3 +137,4 @@ dmypy.json
 *.exe
 *.ini
 *.log
+*.TOTO
