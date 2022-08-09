@@ -67,16 +67,19 @@ def get_workout(driver, sql_db):
     #find todays workout and get the TrainerDay link
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@class='day day clickable today']//*[@class='activity']"))).click()
     td_link = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.markdown a"))).get_attribute('href')
-
-    if not check_workout(td_link, sql_db):
-        return td_link
-    else:
+        if td_link:
+            if not 'trainerday' in td_link:
+                return False, 'No workout found...'
+            elif not database_functions.check_workout(td_link):
+                database_functions.load_workout(td_link)
+                return td_link, 'Workout found...'
+            else:
         driver.quit()
         return False
 
 
-def push_workout(driver, td_link):
-    #navigate to td login page
+def td_login(driver, username, password):
+    """ Log into TrainerDay """
     driver.get('https://trainerday.com/login')
 
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@class='wpforms-field-large wpforms-field-required']"))).send_keys(TD_UNAME)
