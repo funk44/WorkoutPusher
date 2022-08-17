@@ -138,3 +138,6 @@ dmypy.json
 *.ini
 *.log
 *.TOTO
+
+#mine
+test.py

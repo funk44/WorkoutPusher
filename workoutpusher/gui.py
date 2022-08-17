@@ -9,7 +9,7 @@ import logging
 import platform
 
 #custom libs
-import workoutpusher
+import workoutpusher.workoutpusher
 import browser_functions
 import database_functions
 import general_functions
