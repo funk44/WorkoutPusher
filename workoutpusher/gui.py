@@ -1,5 +1,5 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Button, PhotoImage, StringVar, messagebox, Label
+from tkinter import Tk, StringVar, messagebox
 
 import queue
 import time
@@ -9,10 +9,10 @@ import logging
 import platform
 
 #custom libs
-import workoutpusher.workoutpusher
+import workoutpusher
 import browser_functions
 import database_functions
-import general_functions
+import build_widgets
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -24,10 +24,8 @@ logging.basicConfig(level=logging.INFO,
                     datefmt='%Y%m%d %H:%M:%S',
                     filemode='a')
 
-
 def relative_to_assets(path: str):
     return ASSETS_PATH / Path(path)
-
 
 class GUI(object):
     def __init__(self, master, queue, worker_thread):
@@ -53,7 +51,7 @@ class GUI(object):
         self.update_text = StringVar()
         
         #place widgets on canvas
-        self.build_widgets()
+        build_widgets.place_widgets()
 
 
     def handle_exceptions(self, excp, val, tb):
@@ -63,198 +61,6 @@ class GUI(object):
         excp_msg = ''.join(traceback.format_exception(excp, val, tb))
         logging.log(excp_msg)
         messagebox.showerror(title='Error', message='An unknown error has occured. \nPlease restart the application')
-
-
-    def build_widgets(self):
-        """ Build and place all widgets on tkinter window """
-        self.canvas = Canvas(
-            self.window,
-            bg = "#FFFFFF",
-            height = 405,
-            width = 882,
-            bd = 0,
-            highlightthickness = 0,
-            relief = "ridge"
-        )
-
-        self.canvas.place(x = 0, y = 0)
-        self.canvas.create_text(
-            495.0,
-            59.0,
-            anchor="nw",
-            text="Intervals.icu",
-            fill="#000000",
-            font=("Rubik Bold", 15 * -1)
-        )
-
-        self.canvas.create_text(
-            495.0,
-            196.0,
-            anchor="nw",
-            text="TrainerDay",
-            fill="#000000",
-            font=("Rubik Bold", 15 * -1)
-        )
-
-        self.button_image_1 = PhotoImage(
-            file=relative_to_assets("button_1.png"))
-        self.button_1 = Button(
-            image=self.button_image_1,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: self.worker_thread(),
-            relief="flat"
-        )
-        self.button_1.place(
-            x=745.0,
-            y=365.0,
-            width=118.0,
-            height=34.0
-        )
-
-        self.image_image_1 = PhotoImage(
-            file=relative_to_assets("image_1.png"))
-        self.image_1 = self.canvas.create_image(
-            439.0,
-            202.0,
-            image=self.image_image_1
-        )
-
-        self.entry_image = PhotoImage(
-            file=relative_to_assets("entry.png"))
-        self.entry_bg_1 = self.canvas.create_image(
-            664.0,
-            104.0,
-            image=self.entry_image
-        )
-        self.entry = Entry(
-            bd=0,
-            bg="#F1F1F1",
-            highlightthickness=0,
-            textvariable=self.icu_uname,
-            font=('Calibri', 14 * -1)
-        )
-        self.entry.place(
-            x=473.0,
-            y=82.0 + 15,
-            width=382.0,
-            height=30.0
-        )
-
-        self.entry_bg_2 = self.canvas.create_image(
-            664.0,
-            157.5,
-            image=self.entry_image
-        )
-        self.entry_2 = Entry(
-            bd=0,
-            bg="#F1F1F1",
-            highlightthickness=0,
-            show='*',
-            textvariable=self.icu_pw,
-            font=('Calibri', 14 * -1)
-        )
-        self.entry_2.place(
-            x=473.0,
-            y=135.0 + 15,
-            width=382.0,
-            height=30.0
-        )
-
-        self.canvas.create_text(
-            471.0,
-            87.0,
-            anchor="nw",
-            text="Username",
-            fill="#000000",
-            font=("Rubik Medium", 11 * -1)
-        )
-
-        self.canvas.create_text(
-            471.0,
-            139.0,
-            anchor="nw",
-            text="Password",
-            fill="#000000",
-            font=("Rubik Medium", 11 * -1)
-        )
-
-        self.entry_bg_3 = self.canvas.create_image(
-            664,
-            239.0,
-            image=self.entry_image
-        )
-        self.entry_3 = Entry(
-            bd=0,
-            bg="#F1F1F1",
-            highlightthickness=0,
-            textvariable=self.td_uname,
-            font=('Calibri', 14 * -1)
-        )
-        self.entry_3.place(
-            x=476.0,
-            y=217.0 + 15,
-            width=379.0,
-            height=30.0
-        )
-
-        self.entry_bg_4 = self.canvas.create_image(
-            665.5,
-            292.0,
-            image=self.entry_image
-        )
-        self.entry_4 = Entry(
-            bd=0,
-            bg="#F1F1F1",
-            highlightthickness=0,
-            show='*',
-            textvariable=self.td_pw,
-            font=('Calibri', 14 * -1)
-        )
-        self.entry_4.place(
-            x=476.0,
-            y=270.0 + 15,
-            width=379.0,
-            height=30.0
-        )
-
-        self.canvas.create_text(
-            471.0,
-            222.0,
-            anchor="nw",
-            text="Username",
-            fill="#000000",
-            font=("Rubik Medium", 11 * -1)
-        )
-
-        self.canvas.create_text(
-            471.0,
-            274.0,
-            anchor="nw",
-            text="Password",
-            fill="#000000",
-            font=("Rubik Medium", 11 * -1)
-        )
-
-        # self.checkbox = Checkbutton(text='Schedule', 
-        #                     variable=self.schedule_job, 
-        #                     bg='White', 
-        #                     font=("Rubik Medium", 12 * -1)
-        #                     )
-        # self.checkbox.place(x=474, 
-        #             y=370,
-        #             anchor="nw")
-
-
-        self.update_label = Label(self.canvas,
-                    textvariable=self.update_text,
-                    font=("Roboto", 14 * -1),
-                    bg='white'
-        )
-        self.update_label.place(relx=0.535,
-                    rely=0.800,
-                    anchor='nw'
-                )
 
 
     def process_incoming(self):
@@ -299,42 +105,29 @@ class ThreadedWorker(object):
         """ Main worker function to call the main workout
             pusher functions  """
 
-        settings = general_functions.read_settings(ASSETS_PATH)
-
         if platform.system() != 'Windows':
             messagebox.showerror(title='Windows required', message='WorkoutPusher only supports Windows currently')
             return
 
+        if not self.gui.icu_uname.get() or not self.gui.icu_pw.get() or not self.gui.td_uname.get() or not self.gui.td_uname.get():
+            self.queue.put('Missing username and/or password')
+            return
+
         #check default browser
-        browser, version = browser_functions.default_brower_windows()
+        browser = browser_functions.default_brower_windows()
 
         #get the driver NOTE: also checks for the correct version 
-        self.queue.put('Checking webdriver')
-        driver = browser_functions.get_driver(OUTPUT_PATH, browser, settings, version)
+        self.queue.put('Starting webdriver')
+        driver = browser_functions.get_driver(browser)
         
         #if string is returned there is an error with the webdriver and prompt user
         if isinstance(driver, str):
-            if driver == 'No driver':
-                title = 'No driver found'
-                message = 'Webdriver not found, would you like to download?'
-            else:
-                title = 'Incorrect driver'
-                message = 'Incorrect driver found, would you like to download the correct version?'
-            if messagebox.askyesno(title=title, message=message):
-                self.queue.put('Downloading driver')
-                browser_functions.download_driver(settings, browser, version)
-                time.sleep(5)
-                self.queue.put('Downloaded. Check your default download directory')
-                return
-            else:
-                self.queue.put('Webdriver error')
+            self.queue.put('Webdriver error')
+            return
         else:
             #get the passwords and clear the password variables
             icu_pw = self.gui.icu_pw.get()
             td_pw = self.gui.td_pw.get()
-
-            # self.gui.icu_pw.set('')
-            # self.gui.td_pw.set('')
 
             #login to i.icu
             self.queue.put('Logging into Intervals.icu')

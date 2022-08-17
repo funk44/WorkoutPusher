@@ -16,7 +16,7 @@ def icu_login(driver, username, password):
     WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, f"//*[@name='email']"))).send_keys(username)
     WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, f"//*[@name='password']"))).send_keys(password)
 
-    WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@class='v-btn__content' and text()='Login']"))).click()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//*[@class='v-btn__content' and text()='Login']"))).click()
     
     try:
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, f"//*[@class='red--text']")))
