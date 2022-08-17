@@ -16,7 +16,7 @@ def icu_login(driver, username, password):
     WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, f"//*[@name='email']"))).send_keys(username)
     WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, f"//*[@name='password']"))).send_keys(password)
 
-    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//*[@class='v-btn__content' and text()='Login']"))).click()
+    WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//*[@class='v-btn__content' and text()='Login']"))).click()
     
     try:
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, f"//*[@class='red--text']")))
@@ -32,11 +32,11 @@ def get_workout(driver):
     from a past run """
     
     #bypass the sign-up prompt NOTE: !!! PLEASE CONSIDER SUPPORTING !!!
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@class='v-icon material-icons theme--dark' and text()='close']"))).click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[@class='v-icon material-icons theme--dark' and text()='close']"))).click()
 
     try: 
         #find todays workout and get the TrainerDay link
-        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@class='day day clickable today']//*[@title='Ride']"))).click()
+        WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[@class='day day clickable today']//*[@title='Ride']"))).click()
 
         td_link = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.markdown a"))).get_attribute('href')
         if td_link:
@@ -60,7 +60,7 @@ def td_login(driver, username, password):
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@class='wpforms-field-large wpforms-field-required']"))).send_keys(username)
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//input[@type='password']"))).send_keys(password)
 
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@class='wpforms-submit' and text()='Login']"))).click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[@class='wpforms-submit' and text()='Login']"))).click()
 
     try:
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//*[@class='wpforms-error-container']")))
@@ -73,8 +73,8 @@ def push_workout(driver, td_link):
     """ Push the workout to TrainingPeaks """
     driver.get(td_link)
 
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Send To')]"))).click()
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'TrainingPeaks (Power)')]"))).click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), 'Send To')]"))).click()
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(), 'TrainingPeaks (Power)')]"))).click()
 
     #sleep to confirm send
     sleep(3)
